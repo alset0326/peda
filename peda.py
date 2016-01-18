@@ -4337,6 +4337,8 @@ class PEDACmd(object):
         if not self._is_running():
             return
 
+	peda.execute('set height 0')
+
         status = peda.get_status()
         # display registers
         if "reg" in opt or "register" in opt:
