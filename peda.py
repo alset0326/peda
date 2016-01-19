@@ -4337,7 +4337,7 @@ class PEDACmd(object):
         if not self._is_running():
             return
 
-	peda.execute('set height 0')
+        peda.execute('set height 0')
 
         status = peda.get_status()
         # display registers
@@ -6133,11 +6133,12 @@ peda.execute("handle SIGALRM print nopass")  # ignore SIGALRM
 peda.execute("handle SIGSEGV stop print nopass")  # catch SIGSEGV
 
 try:
-    from logo import LOGOS
+    import cPickle as pickle
     import random
 
-    num = random.randint(0, len(LOGOS) - 1)
-    msg(blue(LOGOS[num].decode('base64'), 'bold'))
+    logos = pickle.load(open(os.path.dirname(PEDAFILE) + '/lib/logos', 'r'))
+    num = random.randint(0, len(logos) - 1)
+    msg(blue(logos[num], 'bold'))
     msg(red('modified by alset v1.0'.rjust(num + 20)))
     msg('')
 except:
