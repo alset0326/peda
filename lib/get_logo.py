@@ -2,6 +2,7 @@ import re
 import progressbar
 import pickle
 import requests
+import zlib
 
 reply = requests.get('http://ascii.mastervb.net/')
 # <option value="xhelvi.flf">xhelvi.flf</option>
@@ -18,11 +19,12 @@ for index, option in enumerate(m):
                                                                                   'rtol': 'undefined',
                                                                                   'old_layout': 'undefined',
                                                                                   'font': str(option),
-                                                                                  'html_mode': 'undefined'})
+                                                                                  'html_mode': 'undefined'},
+                             proxies={"http": "http://127.0.0.1:8118"})
         t = str(reply.text)
         image = t[t.index('<pre>') + 5:t.index('</pre>')]
         l.append(image)
     except:
         print 'missing option: %s' % option
-pickle.dump(l, open('logos', 'w'))
+open('logos', 'wb').write(zlib.compress(pickle.dumps(l)))
 p.finish()

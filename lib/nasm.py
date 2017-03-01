@@ -83,13 +83,13 @@ class Nasm(object):
             shellcode = []
             pattern = re.compile("([0-9A-F]{8})\s*([^\s]*)\s*(.*)")
 
-            matches = pattern.findall(asmcode)
+            # matches = pattern.findall(asmcode)
             for line in asmcode.splitlines():
                 m = pattern.match(line)
                 if m:
                     (addr, bytes, code) = m.groups()
-                    sc = '"%s"' % to_hexstr(codecs.decode(bytes, 'hex'))
-                    shellcode += [(sc, "0x" + addr, code)]
+                    sc = '"0x%s"' % bytes
+                    shellcode += [(sc, "0x" + addr, code.strip())]
 
             maxlen = max([len(x[0]) for x in shellcode])
             text = ""

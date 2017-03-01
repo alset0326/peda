@@ -9,6 +9,13 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from subprocess import Popen, PIPE
+
+def check_command(command):
+    p = Popen(command, stdout=PIPE, stdin=PIPE, stderr=PIPE, shell=True)
+    p.communicate()
+    err = p.wait()
+    return err == 0
 
 # change below settings to match your needs
 ## BEGIN OF SETTINGS ##

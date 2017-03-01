@@ -28,6 +28,17 @@ from six import StringIO
 from six.moves import range
 from six.moves import input
 
+try:
+    reload is None
+except NameError:
+    try:
+        from importlib import reload
+    except ImportError:
+        try:
+            from imp import reload
+        except ImportError:
+            pass
+
 
 # http://wiki.python.org/moin/PythonDecoratorLibrary#Memoize
 # http://stackoverflow.com/questions/8856164/class-decorator-decorating-method-in-python
@@ -170,7 +181,7 @@ class message(object):
     def bufferize(self, f=None):
         """Activate message's bufferization, can also be used as a decorater."""
 
-        if f != None:
+        if f is not None:
             @functools.wraps(f)
             def wrapper(*args, **kwargs):
                 self.bufferize()
@@ -214,17 +225,34 @@ msg = message()
 
 def warning_msg(text):
     """Colorize warning message with prefix"""
-    msg(colorize("Warning: " + str(text), "yellow"))
+    msg("[!] Warning: " + str(text), "yellow")
+
+
+warning = warning_msg
 
 
 def error_msg(text):
     """Colorize error message with prefix"""
-    msg(colorize("Error: " + str(text), "red"))
+    msg("[!] Error: " + str(text), "red")
+
+
+error = error_msg
 
 
 def debug_msg(text, prefix="Debug"):
     """Colorize debug message with prefix"""
-    msg(colorize("%s: %s" % (prefix, str(text)), "cyan"))
+    msg("%s: %s" % (prefix, str(text)), "cyan")
+
+
+debug = debug_msg
+
+
+def info_msg(text):
+    """Colorize info message with prefix"""
+    msg(green('[*] ') + str(text))
+
+
+info = info_msg
 
 
 def trim(docstring):
@@ -916,3 +944,10 @@ def string_repr(text, show_quotes=True):
         return output
     else:
         return output[1:-1]
+
+def reload_module(name):
+    if reload:
+        if name in sys.modules:
+            module = sys.modules.get(name)
+            return reload(module)
+    return None
