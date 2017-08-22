@@ -6343,7 +6343,7 @@ msg('')
 
 if zlib:
     with open(os.path.dirname(PEDAFILE) + '/lib/logos', 'rb') as f:
-        logos = pickle.loads(zlib.decompress(f.read()))
+        logos = pickle_loads(zlib.decompress(f.read()))
     msg(logos[random.randint(0, len(logos) - 1)], 'blue', 'bold')
     msg('Modified by alset v1.0'.rjust(random.randint(10, len(logos) + 10)), 'red')
     msg('')
