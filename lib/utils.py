@@ -391,6 +391,8 @@ def to_int(val):
     """
     Convert a string to int number
     """
+    if val is None:
+        return None
     try:
         return int(str(val), 0)
     except:
@@ -935,6 +937,7 @@ def string_repr(text, show_quotes=True):
         return output
     else:
         return output[1:-1]
+
 
 def reload_module(name):
     if reload:
